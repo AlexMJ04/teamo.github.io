@@ -8,12 +8,13 @@ const container = document.getElementById('game-container');
 const scene = new THREE.Scene();
 
 const renderer = new THREE.WebGLRenderer({ 
-    antialias: false, // Desactivado para ganar el máximo de FPS
+    antialias: false,
     powerPreference: "high-performance" 
 });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Bajado de 2x a 1.5x para aliviar la GPU
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.2)); // 1.2x es el "sweet spot" entre nitidez y velocidad
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = false; // DESACTIVADO: Las sombras son lo que más consume recursos
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.BasicShadowMap; // El mapa de sombras más rápido que existe
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.2;
 container.appendChild(renderer.domElement);
@@ -21,7 +22,7 @@ container.appendChild(renderer.domElement);
 const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.set(0, 1.6, 2);
 
-// --- ILUMINACIÓN ---
+// --- ILUMINACIÓN (Balanceada para esencia y velocidad) ---
 new RGBELoader()
     .setPath('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/equirectangular/')
     .load('royal_esplanade_1k.hdr', function (texture) {
@@ -30,26 +31,26 @@ new RGBELoader()
         scene.background = new THREE.Color(0xefefef);
     });
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+// Luz de Hemisferio: Da profundidad de color sin costo (Cielo azulado, Suelo marrón)
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0x443322, 0.6);
+scene.add(hemiLight);
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
 scene.add(ambientLight);
 
-const sunLight = new THREE.DirectionalLight(0xfff5e6, 2.5);
+const sunLight = new THREE.DirectionalLight(0xfff5e6, 2.0);
 sunLight.position.set(-15, 8, 0);
 sunLight.castShadow = true;
-sunLight.shadow.mapSize.width = 1024; // Reducido de 2048 para performance
-sunLight.shadow.mapSize.height = 1024;
+sunLight.shadow.mapSize.width = 512; // Resolución mínima para "esencia" sin lag
+sunLight.shadow.mapSize.height = 512;
 sunLight.shadow.camera.near = 0.5;
-sunLight.shadow.camera.far = 50;
-sunLight.shadow.camera.left = -15;
-sunLight.shadow.camera.right = 15;
-sunLight.shadow.camera.top = 15;
-sunLight.shadow.camera.bottom = -15;
-sunLight.shadow.bias = -0.001; // Ajuste leve de bias para evitar artifacts con PCF
+sunLight.shadow.camera.far = 30;
+sunLight.shadow.bias = -0.005;
 scene.add(sunLight);
 
-const fillLight = new THREE.PointLight(0xffeedd, 0.5, 15);
+const fillLight = new THREE.PointLight(0xffeedd, 0.4, 12);
 fillLight.position.set(0, 3.5, 0);
-fillLight.castShadow = false; // Desactivar sombras de punto para ganar mucha velocidad
+fillLight.castShadow = false;
 scene.add(fillLight);
 
 
