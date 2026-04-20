@@ -47,6 +47,8 @@ sunLight.shadow.camera.near = 0.5;
 sunLight.shadow.camera.far = 30;
 sunLight.shadow.bias = -0.005;
 scene.add(sunLight);
+sunLight.shadow.autoUpdate = false; // Optimización masiva: Las sombras no cambian si el sol no se mueve
+sunLight.shadow.needsUpdate = true; // Forzar un renderizado inicial de sombras
 
 const fillLight = new THREE.PointLight(0xffeedd, 0.4, 12);
 fillLight.position.set(0, 3.5, 0);
@@ -92,16 +94,16 @@ wallBump.repeat.set(8, 8);
 
 const texWindowsXP = texLoader.load('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=100&w=2048');
 
-const floorMat = new THREE.MeshPhongMaterial({ map: texWoodColor, shininess: 10 });
-const marbleMat = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 80 });
-const darkMetalMat = new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 30 });
-const silverMetalMat = new THREE.MeshPhongMaterial({ color: 0xaaaaaa, shininess: 50 });
-const glassMat = new THREE.MeshPhongMaterial({ color: 0xffffff, opacity: 0.3, transparent: true });
+const floorMat = new THREE.MeshPhongMaterial({ map: texWoodColor, bumpMap: texWoodBump, bumpScale: 0.01, shininess: 15 });
+const marbleMat = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 90, specular: 0x444444 });
+const darkMetalMat = new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 40, specular: 0x222222 });
+const silverMetalMat = new THREE.MeshPhongMaterial({ color: 0xaaaaaa, shininess: 60, specular: 0xffffff });
+const glassMat = new THREE.MeshPhongMaterial({ color: 0xffffff, opacity: 0.2, transparent: true, shininess: 100 });
 
-// Materiales Mejorados (Optimizados para bajos recursos)
-const wallMat = new THREE.MeshPhongMaterial({ color: 0x909090, shininess: 5 }); 
-const ceilingMat = new THREE.MeshPhongMaterial({ color: 0xe0e0e0, shininess: 5 }); 
-const fabricMat = new THREE.MeshPhongMaterial({ color: 0x224455, shininess: 2 });
+// Materiales con esencia (Texturizados pero ligeros)
+const wallMat = new THREE.MeshPhongMaterial({ color: 0x909090, bumpMap: wallBump, bumpScale: 0.005, shininess: 2 }); 
+const ceilingMat = new THREE.MeshPhongMaterial({ color: 0xe0e0e0, shininess: 2 }); 
+const fabricMat = new THREE.MeshPhongMaterial({ color: 0x224455, bumpMap: fabricBump, bumpScale: 0.01, shininess: 5 });
 
 
 // --- ARQUITECTURA ---
