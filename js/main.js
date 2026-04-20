@@ -8,13 +8,12 @@ const container = document.getElementById('game-container');
 const scene = new THREE.Scene();
 
 const renderer = new THREE.WebGLRenderer({ 
-    antialias: window.devicePixelRatio < 2, // Desactivar antialias en pantallas de alta densidad para ganar FPS
+    antialias: false, // Desactivado para ganar el máximo de FPS
     powerPreference: "high-performance" 
 });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limitar a 2x para evitar lag en pantallas 4K/móviles
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Bajado de 2x a 1.5x para aliviar la GPU
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFShadowMap; // PCF es más rápido que PCFSoft
+renderer.shadowMap.enabled = false; // DESACTIVADO: Las sombras son lo que más consume recursos
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.2;
 container.appendChild(renderer.domElement);
@@ -92,16 +91,16 @@ wallBump.repeat.set(8, 8);
 
 const texWindowsXP = texLoader.load('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=100&w=2048');
 
-const floorMat = new THREE.MeshStandardMaterial({ map: texWoodColor, bumpMap: texWoodBump, bumpScale: 0.01, roughnessMap: texWoodRoughness, metalness: 0.1, envMapIntensity: 0.8 });
-const marbleMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.05, metalness: 0.1, envMapIntensity: 1.5 });
-const darkMetalMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.2, metalness: 0.9, envMapIntensity: 1.0 });
-const silverMetalMat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, roughness: 0.3, metalness: 0.8, envMapIntensity: 1.2 });
-const glassMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0.1, roughness: 0.05, transmission: 0.9, ior: 1.5, thickness: 0.5, envMapIntensity: 2.0 });
+const floorMat = new THREE.MeshPhongMaterial({ map: texWoodColor, shininess: 10 });
+const marbleMat = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 80 });
+const darkMetalMat = new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 30 });
+const silverMetalMat = new THREE.MeshPhongMaterial({ color: 0xaaaaaa, shininess: 50 });
+const glassMat = new THREE.MeshPhongMaterial({ color: 0xffffff, opacity: 0.3, transparent: true });
 
-// Materiales Mejorados (Paredes realistas y Tela Azul Marino)
-const wallMat = new THREE.MeshStandardMaterial({ color: 0x909090, roughness: 0.95, bumpMap: wallBump, bumpScale: 0.008 }); // Gris para las paredes
-const ceilingMat = new THREE.MeshStandardMaterial({ color: 0xe0e0e0, roughness: 0.95, bumpMap: wallBump, bumpScale: 0.002 }); // Gris claro para el techo
-const fabricMat = new THREE.MeshStandardMaterial({ color: 0x224455, roughness: 0.9, bumpMap: fabricBump, bumpScale: 0.015 });
+// Materiales Mejorados (Optimizados para bajos recursos)
+const wallMat = new THREE.MeshPhongMaterial({ color: 0x909090, shininess: 5 }); 
+const ceilingMat = new THREE.MeshPhongMaterial({ color: 0xe0e0e0, shininess: 5 }); 
+const fabricMat = new THREE.MeshPhongMaterial({ color: 0x224455, shininess: 2 });
 
 
 // --- ARQUITECTURA ---
@@ -1194,7 +1193,7 @@ function startCinematic() {
             el.setAttribute('muted', '');
             el.playsInline = true;
             el.setAttribute('playsinline', '');
-            el.preload = 'metadata';
+            el.preload = 'none'; // Máximo ahorro: no cargar nada hasta que se necesite
             // No usamos loop para poder escuchar el evento "ended"
             el.style.objectFit = 'contain'; // Para que no se corte (zoom in)
         } else {
