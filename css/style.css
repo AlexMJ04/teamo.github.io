@@ -1,0 +1,244 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'VT323', monospace;
+    background-color: #000;
+    /* Prevenir selección de texto en móviles */
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+#game-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none; /* Clics pasan a través excepto en elementos con pointer-events: auto */
+}
+
+.subtitles {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8), -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+#objective-box {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 10px 20px;
+    border: 2px solid #fff;
+    font-size: 24px;
+    border-radius: 5px;
+    pointer-events: none;
+    text-shadow: 1px 1px 0 #000;
+}
+
+#interaction-prompt {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 255, 0.8);
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 24px;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    pointer-events: auto; /* Hacerlo clickeable */
+    animation: pulse 1.5s infinite;
+    text-align: center;
+}
+
+#interaction-prompt.hidden {
+    display: none;
+}
+
+.key {
+    background: #fff;
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+#joystick-zone {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 150px;
+    height: 150px;
+    pointer-events: auto; /* Recibir toques */
+}
+
+@keyframes pulse {
+    0% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+    100% { transform: translateX(-50%) scale(1); }
+}
+
+/* Pantalla Cinemática (Pantalla Azul VHS) */
+#cinematic-screen {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: #0000aa; /* Azul VHS clásico */
+    z-index: 100;
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+#cinematic-screen.hidden {
+    display: none;
+}
+
+#cinematic-exit {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: 2px solid white;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2000;
+    transition: background-color 0.3s, transform 0.2s;
+    pointer-events: auto;
+}
+#cinematic-exit:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+#cinematic-exit.hidden {
+    display: none !important;
+}
+
+#cinematic-slideshow {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0; /* Oculto hasta que empiece la peli */
+    transition: opacity 2s ease-in-out, background-image 2s ease-in-out;
+    /* Filtro nostálgico 70s/80s */
+    filter: sepia(0.4) contrast(1.1) brightness(0.9) hue-rotate(-5deg) saturate(0.8);
+}
+
+#cinematic-noise {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.15),
+        rgba(0,0,0,0.15) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events: none;
+    animation: staticNoise 0.2s infinite;
+    z-index: 101;
+}
+
+@keyframes staticNoise {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 5px; }
+}
+
+#cinematic-ui {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+    box-sizing: border-box;
+    z-index: 102;
+    pointer-events: none;
+}
+
+.vhs-text {
+    color: #fff;
+    font-size: 64px;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.vhs-time {
+    color: #fff;
+    font-size: 48px;
+    text-shadow: 2px 2px 0px #000;
+    align-self: flex-end;
+}
+
+#cinematic-message {
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 42px;
+    font-family: 'VT323', monospace;
+    text-align: center;
+    text-shadow: 2px 2px 4px #000;
+    opacity: 1;
+    transition: opacity 2s;
+    z-index: 103;
+    width: 80%;
+}
+
+#cinematic-message.hidden {
+    opacity: 0;
+}
+
+#cinematic-subtitles {
+    position: absolute;
+    bottom: 80px; left: 50%;
+    transform: translateX(-50%);
+    color: #ffff00; /* Subtítulos VHS clásicos amarillos o blancos */
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8), -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    z-index: 104;
+}

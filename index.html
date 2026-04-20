@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <!-- Evitar zoom en móviles y adaptar a la pantalla -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>El VHS de Gabriela</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0000aa">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="css/style.css?v=37">
+    <!-- Fuente retro -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <!-- Librería para el Joystick táctil -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.10.1/nipplejs.min.js"></script>
+</head>
+<body>
+    <!-- Contenedor 3D -->
+    <div id="game-container"></div>
+    
+    <!-- Interfaz de Usuario -->
+    <div id="ui-layer">
+        <div id="crosshair"></div>
+        <div id="subtitles" class="subtitles"></div>
+        
+        <div id="objective-box">Objetivo: Encuentra el VHS en la mesa redonda de mármol.</div>
+
+        <div id="interaction-prompt" class="hidden">
+            Presiona <span class="key">E</span> o toca aquí para interactuar
+        </div>
+
+        <div id="joystick-zone"></div>
+
+        <!-- Pantalla Final (Cinemática) -->
+        <div id="cinematic-screen" class="hidden">
+            <!-- Botón de salida -->
+            <button id="cinematic-exit" class="hidden">Volver a la sala</button>
+
+            <!-- Slideshow de fondo -->
+            <div id="cinematic-slideshow"></div>
+            <!-- Filtro de Ruido VHS -->
+            <div id="cinematic-noise"></div>
+            
+            <!-- Textos fijos (PLAY, Tiempo) -->
+            <div id="cinematic-ui">
+                <div class="vhs-text" id="vhs-loading-text">PLAY<br><br>LEYENDO VHS...</div>
+                <div class="vhs-time" id="vhs-time">00:00:00</div>
+            </div>
+
+            <!-- Mensaje Central -->
+            <div id="cinematic-message" class="hidden"></div>
+            
+            <!-- Subtítulos de The Craving -->
+            <div id="cinematic-subtitles"></div>
+        </div>
+    </div>
+
+    <!-- Import Maps para cargar Three.js como módulo ES nativo en el navegador -->
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    
+    <!-- Script principal del juego -->
+    <script type="module" src="js/main.js?v=54"></script>
+</body>
+</html>
