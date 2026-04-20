@@ -7,11 +7,14 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 const container = document.getElementById('game-container');
 const scene = new THREE.Scene();
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
-renderer.setPixelRatio(window.devicePixelRatio);
+const renderer = new THREE.WebGLRenderer({ 
+    antialias: window.devicePixelRatio < 2, // Desactivar antialias en pantallas de alta densidad para ganar FPS
+    powerPreference: "high-performance" 
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limitar a 2x para evitar lag en pantallas 4K/móviles
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = THREE.PCFShadowMap; // PCF es más rápido que PCFSoft
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.2;
 container.appendChild(renderer.domElement);
@@ -34,20 +37,20 @@ scene.add(ambientLight);
 const sunLight = new THREE.DirectionalLight(0xfff5e6, 2.5);
 sunLight.position.set(-15, 8, 0);
 sunLight.castShadow = true;
-sunLight.shadow.mapSize.width = 2048;
-sunLight.shadow.mapSize.height = 2048;
+sunLight.shadow.mapSize.width = 1024; // Reducido de 2048 para performance
+sunLight.shadow.mapSize.height = 1024;
 sunLight.shadow.camera.near = 0.5;
 sunLight.shadow.camera.far = 50;
 sunLight.shadow.camera.left = -15;
 sunLight.shadow.camera.right = 15;
 sunLight.shadow.camera.top = 15;
 sunLight.shadow.camera.bottom = -15;
-sunLight.shadow.bias = -0.0005;
+sunLight.shadow.bias = -0.001; // Ajuste leve de bias para evitar artifacts con PCF
 scene.add(sunLight);
 
-const fillLight = new THREE.PointLight(0xffeedd, 0.5, 15); // Intensidad reducida, la lámpara central ilumina ahora
+const fillLight = new THREE.PointLight(0xffeedd, 0.5, 15);
 fillLight.position.set(0, 3.5, 0);
-fillLight.castShadow = true;
+fillLight.castShadow = false; // Desactivar sombras de punto para ganar mucha velocidad
 scene.add(fillLight);
 
 
@@ -180,10 +183,10 @@ const cBase = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.1, 32), dark
 cBase.position.y = -0.05; chandelier.add(cBase);
 const cPole = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1.0, 16), darkMetalMat);
 cPole.position.y = -0.5; chandelier.add(cPole);
-const cRing = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.05, 16, 64), silverMetalMat);
+const cRing = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.05, 12, 32), silverMetalMat);
 cRing.rotation.x = Math.PI / 2; cRing.position.y = -1.0; chandelier.add(cRing);
 const cLight = new THREE.PointLight(0xffffee, 1.5, 20);
-cLight.position.y = -1.0; cLight.castShadow = true; chandelier.add(cLight);
+cLight.position.y = -1.0; cLight.castShadow = false; chandelier.add(cLight);
 
 
 // --- ZONA DE TV ---
@@ -218,7 +221,7 @@ tvScreen.position.set(0, 2.3, 0.18);
 tvGroup.add(tvScreen);
 
 function createPlant(x, z) {
-    const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.08, 0.2, 16), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+    const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.08, 0.2, 12), new THREE.MeshStandardMaterial({ color: 0xffffff }));
     pot.position.set(x, 0.9, z);
     pot.castShadow = true;
     tvGroup.add(pot);
@@ -243,7 +246,7 @@ interactables.push(tvHitbox);
 
 
 // --- ZONA CENTRAL ---
-const rugGeo = new THREE.CylinderGeometry(4.5, 4.5, 0.02, 64);
+const rugGeo = new THREE.CylinderGeometry(4.5, 4.5, 0.02, 32);
 const rug = new THREE.Mesh(rugGeo, new THREE.MeshStandardMaterial({ color: 0xaaaaaa, roughness: 1.0 }));
 rug.position.set(0, 0.01, 1.0);
 rug.receiveShadow = true;
@@ -253,7 +256,7 @@ const tableGroup = new THREE.Group();
 tableGroup.position.set(1.5, 0, -1.5); // Movida para no chocar con el sofá
 scene.add(tableGroup);
 
-const t1Top = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 0.05, 64), marbleMat);
+const t1Top = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 0.05, 32), marbleMat);
 t1Top.position.set(-0.5, 0.5, 0);
 t1Top.castShadow = true; t1Top.receiveShadow = true;
 tableGroup.add(t1Top);
@@ -262,10 +265,10 @@ const t1Leg1 = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5, 16), d
 t1Leg1.position.set(-0.5 - 0.8, 0.25, 0); t1Leg1.castShadow = true; tableGroup.add(t1Leg1);
 const t1Leg2 = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5, 16), darkMetalMat);
 t1Leg2.position.set(-0.5 + 0.4, 0.25, 0.7); t1Leg2.castShadow = true; tableGroup.add(t1Leg2);
-const t1Leg3 = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5, 16), darkMetalMat);
+const t1Leg3 = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5, 12), darkMetalMat);
 t1Leg3.position.set(-0.5 + 0.4, 0.25, -0.7); t1Leg3.castShadow = true; tableGroup.add(t1Leg3);
 
-const t2Top = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.05, 64), marbleMat);
+const t2Top = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.05, 32), marbleMat);
 t2Top.position.set(0.8, 0.35, 0.8);
 t2Top.castShadow = true; t2Top.receiveShadow = true;
 tableGroup.add(t2Top);
@@ -351,17 +354,17 @@ const dinoBlack = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0
 const hatColor = new THREE.MeshStandardMaterial({ color: 0xaa77ff, roughness: 0.7 });
 const hairColor = new THREE.MeshStandardMaterial({ color: 0x663311, roughness: 0.9 });
 
-const bodyGeo = new THREE.SphereGeometry(0.15, 32, 32);
+const bodyGeo = new THREE.SphereGeometry(0.15, 16, 16);
 const dBody = new THREE.Mesh(bodyGeo, dinoGreen);
 dBody.scale.set(1, 1.2, 1); dBody.position.y = 0.15; dBody.castShadow = true;
 dinoGroup.add(dBody);
 
-const bellyGeo = new THREE.SphereGeometry(0.12, 32, 32);
+const bellyGeo = new THREE.SphereGeometry(0.12, 16, 16);
 const dBelly = new THREE.Mesh(bellyGeo, dinoBelly);
 dBelly.scale.set(1, 1.1, 0.5); dBelly.position.set(0, 0.12, 0.11);
 dinoGroup.add(dBelly);
 
-const headGeo = new THREE.SphereGeometry(0.14, 32, 32);
+const headGeo = new THREE.SphereGeometry(0.14, 16, 16);
 const dHead = new THREE.Mesh(headGeo, dinoGreen);
 dHead.scale.set(1, 0.9, 1); dHead.position.set(0, 0.35, 0.02); dHead.castShadow = true;
 dinoGroup.add(dHead);
@@ -1191,7 +1194,7 @@ function startCinematic() {
             el.setAttribute('muted', '');
             el.playsInline = true;
             el.setAttribute('playsinline', '');
-            el.preload = 'auto';
+            el.preload = 'metadata';
             // No usamos loop para poder escuchar el evento "ended"
             el.style.objectFit = 'contain'; // Para que no se corte (zoom in)
         } else {
