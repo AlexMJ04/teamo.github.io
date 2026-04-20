@@ -286,7 +286,7 @@ const sLegsPos = [
     [-2.8, -0.8], [2.8, -0.8], [-2.8, 0.8], [2.8, 0.8], [0, -0.8], [0, 0.8], // sBase legs
     [-2.8, -3.8], [-1.2, -3.8] // sChais front legs
 ];
-for(let p of sLegsPos) {
+for (let p of sLegsPos) {
     let leg = new THREE.Mesh(sLegGeo, darkMetalMat);
     leg.position.set(p[0], -0.075, p[1]); // Posición en negativo para que bajen de la base y toquen el suelo
     leg.castShadow = true;
@@ -340,7 +340,7 @@ sofaGroup.add(cushion2);
 // --- DINOSAURIO Y VHS ---
 const dinoGroup = new THREE.Group();
 // Mover a la mesa 1 (Absolute: x=1.5 - 0.5 = 1.0, z=-1.5)
-dinoGroup.position.set(1.0, 0.52, -1.5); 
+dinoGroup.position.set(1.0, 0.52, -1.5);
 scene.add(dinoGroup);
 
 // Materiales idénticos a la foto del peluche
@@ -390,16 +390,16 @@ dTail.rotation.x = -Math.PI / 2.5;
 dinoGroup.add(dTail);
 
 // Escamas de colores redondeadas fijadas al cuerpo
-const scaleColors = [0xff99cc, 0xffff66, 0xcc99ff, 0x660099]; 
+const scaleColors = [0xff99cc, 0xffff66, 0xcc99ff, 0x660099];
 const scalePos = [
-    {y: 0.38, z: -0.13, rx: -Math.PI/6}, // Cabeza
-    {y: 0.28, z: -0.16, rx: -Math.PI/4}, // Cuello
-    {y: 0.16, z: -0.18, rx: -Math.PI/3}, // Espalda media
-    {y: 0.06, z: -0.16, rx: -Math.PI/2}  // Espalda baja
+    { y: 0.38, z: -0.13, rx: -Math.PI / 6 }, // Cabeza
+    { y: 0.28, z: -0.16, rx: -Math.PI / 4 }, // Cuello
+    { y: 0.16, z: -0.18, rx: -Math.PI / 3 }, // Espalda media
+    { y: 0.06, z: -0.16, rx: -Math.PI / 2 }  // Espalda baja
 ];
-for(let i=0; i<4; i++) {
-    let scale = new THREE.Mesh(new THREE.SphereGeometry(0.035, 16, 16), new THREE.MeshStandardMaterial({color: scaleColors[i], roughness: 0.5}));
-    scale.scale.set(1, 1, 0.5); 
+for (let i = 0; i < 4; i++) {
+    let scale = new THREE.Mesh(new THREE.SphereGeometry(0.035, 16, 16), new THREE.MeshStandardMaterial({ color: scaleColors[i], roughness: 0.5 }));
+    scale.scale.set(1, 1, 0.5);
     scale.position.set(0, scalePos[i].y, scalePos[i].z);
     scale.rotation.x = scalePos[i].rx;
     dinoGroup.add(scale);
@@ -586,7 +586,7 @@ dinoHitbox.userData.audio = dinoAudio;
 // Letra de Formidable en Español con tiempos perfectos (LRC)
 // Si el audio que descargaste de YouTube tiene una intro más larga que la canción original, 
 // puedes ajustar este número (ej: 4.5) para retrasar los subtítulos.
-const LYRIC_OFFSET = 0; 
+const LYRIC_OFFSET = 0;
 
 const songSubtitles = [
     { time: 0, text: "" },
@@ -651,58 +651,58 @@ scene.add(arrow);
 const shelfGroup = new THREE.Group();
 shelfGroup.position.set(-7.4, 0, 2);
 scene.add(shelfGroup);
-const sWoodMat = new THREE.MeshStandardMaterial({color: 0x4a3224, roughness: 0.8});
+const sWoodMat = new THREE.MeshStandardMaterial({ color: 0x4a3224, roughness: 0.8 });
 const pilar1 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 2.8, 0.8), darkMetalMat);
 pilar1.position.set(0, 1.4, -1.0); pilar1.castShadow = true; shelfGroup.add(pilar1);
 const pilar2 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 2.8, 0.8), darkMetalMat);
 pilar2.position.set(0, 1.4, 1.0); pilar2.castShadow = true; shelfGroup.add(pilar2);
-for(let i=0; i<5; i++) {
+for (let i = 0; i < 5; i++) {
     let repisa = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.05, 2.1), sWoodMat);
-    repisa.position.set(0, 0.4 + i*0.55, 0); repisa.castShadow = true; shelfGroup.add(repisa);
+    repisa.position.set(0, 0.4 + i * 0.55, 0); repisa.castShadow = true; shelfGroup.add(repisa);
 }
 const bookColors = [0xaa3333, 0x33aa33, 0x3333aa, 0xaaaa33, 0x33aaaa, 0x111111, 0xffffff];
-for(let i=0; i<25; i++) {
-    let bW = 0.04 + Math.random()*0.04; let bH = 0.2 + Math.random()*0.1; let bD = 0.15 + Math.random()*0.1;
-    let book = new THREE.Mesh(new THREE.BoxGeometry(bD, bH, bW), new THREE.MeshStandardMaterial({color: bookColors[Math.floor(Math.random()*bookColors.length)], roughness: 0.6}));
-    let level = Math.floor(Math.random()*5); let bZ = -0.9 + Math.random()*1.8;
-    book.position.set(0, 0.4 + level*0.55 + bH/2, bZ);
-    if(Math.random() > 0.7) book.rotation.x = (Math.random()-0.5)*0.5;
+for (let i = 0; i < 25; i++) {
+    let bW = 0.04 + Math.random() * 0.04; let bH = 0.2 + Math.random() * 0.1; let bD = 0.15 + Math.random() * 0.1;
+    let book = new THREE.Mesh(new THREE.BoxGeometry(bD, bH, bW), new THREE.MeshStandardMaterial({ color: bookColors[Math.floor(Math.random() * bookColors.length)], roughness: 0.6 }));
+    let level = Math.floor(Math.random() * 5); let bZ = -0.9 + Math.random() * 1.8;
+    book.position.set(0, 0.4 + level * 0.55 + bH / 2, bZ);
+    if (Math.random() > 0.7) book.rotation.x = (Math.random() - 0.5) * 0.5;
     book.castShadow = true; shelfGroup.add(book);
 }
-const vase = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.06, 0.3, 16), new THREE.MeshStandardMaterial({color: 0xeeeeee, roughness: 0.2}));
-vase.position.set(0, 0.4 + 4*0.55 + 0.15, -0.6); vase.castShadow = true; shelfGroup.add(vase);
-obstacles.push({x: -7.4, z: 2, r: 1.5});
+const vase = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.06, 0.3, 16), new THREE.MeshStandardMaterial({ color: 0xeeeeee, roughness: 0.2 }));
+vase.position.set(0, 0.4 + 4 * 0.55 + 0.15, -0.6); vase.castShadow = true; shelfGroup.add(vase);
+obstacles.push({ x: -7.4, z: 2, r: 1.5 });
 
 // Reloj de Pared (Movido a la pared derecha)
 const clockGroup = new THREE.Group();
 clockGroup.position.set(7.8, 2.5, -2); clockGroup.rotation.y = -Math.PI / 2; scene.add(clockGroup);
-const cBaseC = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.05, 32), new THREE.MeshStandardMaterial({color: 0x111111, roughness: 0.2}));
+const cBaseC = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.05, 32), new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.2 }));
 cBaseC.rotation.x = Math.PI / 2; clockGroup.add(cBaseC);
-const cFace = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.06, 32), new THREE.MeshBasicMaterial({color: 0xffffff}));
+const cFace = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.06, 32), new THREE.MeshBasicMaterial({ color: 0xffffff }));
 cFace.rotation.x = Math.PI / 2; clockGroup.add(cFace);
 const minPivot = new THREE.Group();
-const minHand = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.3, 0.01), new THREE.MeshBasicMaterial({color: 0x000000}));
+const minHand = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.3, 0.01), new THREE.MeshBasicMaterial({ color: 0x000000 }));
 minHand.position.set(0, 0.15, 0.035); minPivot.add(minHand); minPivot.rotation.z = -Math.PI / 4; clockGroup.add(minPivot);
 const hourPivot = new THREE.Group();
-const hourHand = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.2, 0.01), new THREE.MeshBasicMaterial({color: 0x000000}));
+const hourHand = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.2, 0.01), new THREE.MeshBasicMaterial({ color: 0x000000 }));
 hourHand.position.set(0, 0.1, 0.035); hourPivot.add(hourHand); hourPivot.rotation.z = Math.PI / 6; clockGroup.add(hourPivot);
 
 // Aparador (Mueble en la pared derecha para rellenar)
 const cabinetGroup = new THREE.Group();
 cabinetGroup.position.set(7.2, 0, 2); scene.add(cabinetGroup);
-const cabBody = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.8, 2.0), new THREE.MeshStandardMaterial({color: 0xdddddd, roughness: 0.3}));
+const cabBody = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.8, 2.0), new THREE.MeshStandardMaterial({ color: 0xdddddd, roughness: 0.3 }));
 cabBody.position.y = 0.4; cabBody.castShadow = true; cabinetGroup.add(cabBody);
 const cabTop = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.05, 2.1), sWoodMat);
 cabTop.position.y = 0.825; cabTop.castShadow = true; cabinetGroup.add(cabTop);
-const cabVase = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), new THREE.MeshStandardMaterial({color: 0xaa3333}));
+const cabVase = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), new THREE.MeshStandardMaterial({ color: 0xaa3333 }));
 cabVase.position.set(0, 1.0, 0); cabVase.castShadow = true; cabinetGroup.add(cabVase);
-obstacles.push({x: 7.2, z: 2, r: 1.5});
+obstacles.push({ x: 7.2, z: 2, r: 1.5 });
 
 const tBooksGroup = new THREE.Group();
 tBooksGroup.position.set(1.3, 0.525, -1.8); scene.add(tBooksGroup);
-const b1 = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.04, 0.4), new THREE.MeshStandardMaterial({color: 0x222222, roughness: 0.4}));
+const b1 = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.04, 0.4), new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.4 }));
 b1.rotation.y = 0.2; b1.castShadow = true; tBooksGroup.add(b1);
-const b2 = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.03, 0.38), new THREE.MeshStandardMaterial({color: 0x880000, roughness: 0.5}));
+const b2 = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.03, 0.38), new THREE.MeshStandardMaterial({ color: 0x880000, roughness: 0.5 }));
 b2.position.set(0, 0.035, 0); b2.rotation.y = -0.1; b2.castShadow = true; tBooksGroup.add(b2);
 
 function createStandingLamp(x, z) {
@@ -767,21 +767,21 @@ function createPainting(imageUrl, color1, color2, shapeType, x, y, z, rotY, hitX
     else if (shapeType === 1) { ctx.fillRect(156, 113, 200, 200); }
     else { ctx.moveTo(256, 100); ctx.lineTo(356, 300); ctx.lineTo(156, 300); }
     ctx.fill(); ctx.globalAlpha = 1.0;
-    
+
     pMat.map = new THREE.CanvasTexture(canvas);
 
     // Intentar cargar la foto real desde assets/
     if (imageUrl) {
-        new THREE.TextureLoader().load(imageUrl, 
-            (tex) => { 
+        new THREE.TextureLoader().load(imageUrl,
+            (tex) => {
                 tex.colorSpace = THREE.SRGBColorSpace;
-                pMat.map = tex; 
-                pMat.needsUpdate = true; 
+                pMat.map = tex;
+                pMat.needsUpdate = true;
             },
             undefined,
-            (err) => { 
+            (err) => {
                 // No mostramos error fuerte, solo avisamos que usa el fallback
-                console.log("Falta agregar la imagen: " + imageUrl); 
+                console.log("Falta agregar la imagen: " + imageUrl);
             }
         );
     }
@@ -952,7 +952,7 @@ function performAction() {
         scene.remove(vhsGroup); interactables.splice(interactables.indexOf(currentTarget), 1); scene.remove(currentTarget);
         objectiveBox.innerText = 'Objetivo: Inserta el VHS en el televisor.';
         arrow.material.color.setHex(0xffaa00);
-        
+
         // Efecto de sonido de agarrar
         if (grabAudio.buffer) {
             if (grabAudio.isPlaying) grabAudio.stop();
@@ -972,39 +972,39 @@ function performAction() {
         const cinematic = document.getElementById('cinematic-screen'); cinematic.classList.remove('hidden');
         document.getElementById('game-container').style.display = 'none';
         if (controls.isLocked) controls.unlock();
-        
+
         const vhsText = document.querySelector('.vhs-text');
         vhsText.style.display = 'block'; // Asegurar que sea visible
-        
+
         const timeDisplay = document.getElementById('vhs-time');
         timeDisplay.innerText = "00:00:00"; // En cero inicialmente
 
         // Empezar el zumbido de la cinta rodando después de que se inserte
         setTimeoutC(() => {
             if (tapeAudio.buffer && !tapeAudio.isPlaying) tapeAudio.play();
-            
+
             // Después de 5 segundos, detener la cinta y reproducir el sonido final de carga
             setTimeoutC(() => {
                 if (tapeAudio.isPlaying) tapeAudio.stop();
                 if (loadedAudio.buffer) loadedAudio.play();
-                
+
                 // Ocultar la leyenda de VHS porque ya cargó
                 vhsText.style.display = 'none';
-                
+
                 // Iniciar el cronómetro de grabación/reproducción
                 let seconds = 0;
                 setIntervalC(() => {
                     seconds++;
                     timeDisplay.innerText = `${Math.floor(seconds / 3600).toString().padStart(2, '0')}:${Math.floor((seconds % 3600) / 60).toString().padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
                 }, 1000);
-                
+
                 // Aquí inicia el video y la canción The Craving
                 setTimeoutC(() => {
                     startCinematic();
                 }, 2000);
-                
+
             }, 5000);
-            
+
         }, 1500);
 
         // Apagar la música de la radio al insertar el VHS
@@ -1033,7 +1033,7 @@ function performAction() {
         camera.position.set(0, 1.4, 3.8);
         camera.rotation.set(0, 0, 0);
         document.getElementById('objective-box').innerText = "Estás sentado. Muévete hacia adelante (W o Joystick) para levantarte.";
-        
+
         // Limpiar interfaz y variables de interacción
         interactBtn.classList.add('hidden');
         if (hoveredObject && hoveredObject.userData.ref) hoveredObject.userData.ref.material.emissive.setHex(0x000000);
@@ -1103,8 +1103,8 @@ function animate() {
     // --- UPDATE SUBTITLES ---
     if (radioAudio.isPlaying && radioAudio.buffer && state.objective !== 'done') {
         let songTime = ((Date.now() - radioStartTime) / 1000) % radioAudio.buffer.duration;
-        let lyricTime = songTime - LYRIC_OFFSET; 
-        
+        let lyricTime = songTime - LYRIC_OFFSET;
+
         let currentText = "";
         for (let i = 0; i < songSubtitles.length; i++) {
             if (lyricTime >= songSubtitles[i].time) {
@@ -1130,7 +1130,7 @@ window.addEventListener('resize', () => {
 function startCinematic() {
     // 1. Quitar el color azul sólido para revelar las imágenes
     document.getElementById('cinematic-screen').style.backgroundColor = 'transparent';
-    
+
     const slideshow = document.getElementById('cinematic-slideshow');
     slideshow.style.opacity = 1;
 
@@ -1211,27 +1211,27 @@ function startCinematic() {
         slideshow.appendChild(el);
         mediaElements.push(el);
     });
-    
+
     let currentSlide = 0;
     let isFinalPile = false;
     let slideTimeoutId;
-    
+
     function playNextMedia() {
         if (isFinalPile || mediaElements.length === 0) return;
-        
+
         let prevSlide = currentSlide;
         currentSlide++;
         if (currentSlide >= mediaElements.length) currentSlide = 0;
-        
+
         // Transición de opacidad
         mediaElements[prevSlide].style.opacity = 0;
         mediaElements[currentSlide].style.opacity = 1;
-        
+
         // Pausar el video viejo
         if (mediaFiles[prevSlide].type === 'video') {
             setTimeoutC(() => {
                 if (mediaElements[prevSlide]) mediaElements[prevSlide].pause();
-            }, 2000); 
+            }, 2000);
         }
 
         scheduleNextMedia(currentSlide);
@@ -1239,14 +1239,14 @@ function startCinematic() {
 
     function scheduleNextMedia(index) {
         if (isFinalPile) return;
-        
+
         if (mediaFiles[index].type === 'video') {
             let vid = mediaElements[index];
             vid.currentTime = 0;
             let playPromise = vid.play();
             if (playPromise !== undefined) {
-                playPromise.catch(error => { 
-                    console.log("Video autoplay blocked", error); 
+                playPromise.catch(error => {
+                    console.log("Video autoplay blocked", error);
                     // Si falla, esperamos 4.5s en lugar de saltarlo inmediatamente
                     slideTimeoutId = setTimeoutC(() => {
                         playNextMedia();
@@ -1257,13 +1257,13 @@ function startCinematic() {
             vid.onended = () => {
                 playNextMedia();
             };
-            
+
             // Fallback de seguridad: si el video es infinito o se queda estático, avanzar a los 10 segundos
             slideTimeoutId = setTimeoutC(() => {
                 if (currentSlide === index) { // Solo si seguimos en el mismo slide
                     playNextMedia();
                 }
-            }, 10000); 
+            }, 10000);
         } else {
             // Si es foto, avanzar a los 4.5 segundos
             slideTimeoutId = setTimeoutC(() => {
@@ -1282,19 +1282,19 @@ function startCinematic() {
     setTimeoutC(() => {
         isFinalPile = true;
         clearTimeout(slideTimeoutId);
-        
+
         // Convertir el fondo a una "mesa de madera" (color marrón oscuro)
         slideshow.style.backgroundColor = '#2c1e16';
-        
+
         mediaElements.forEach((el, i) => {
             // Cambiar la transición para que vuelen a la mesa
             el.style.transition = 'all 2s ease-in-out';
-            
+
             // Hacerlos parecer fotos tipo polaroid (borde blanco y sombra)
             el.style.border = '12px solid white';
             el.style.borderBottom = '35px solid white'; // Borde inferior más grueso (estilo polaroid)
             el.style.boxShadow = '5px 5px 15px rgba(0,0,0,0.6)';
-            
+
             // Tamaños más pequeños para la pila final
             // Formato 4:3 o polaroid
             el.style.width = '350px';
@@ -1302,28 +1302,28 @@ function startCinematic() {
             if (el.tagName === 'VIDEO') {
                 el.style.objectFit = 'cover'; // En la mesa final sí queremos que se vean como fotos completas llenando el borde
             } else {
-                el.style.backgroundSize = 'cover'; 
+                el.style.backgroundSize = 'cover';
             }
-            
+
             // Posición centrada pero dispersa al azar
             let centerX = window.innerWidth / 2;
             let centerY = window.innerHeight / 2;
-            
+
             let randomX = centerX - 175 + (Math.random() - 0.5) * 500;
             let randomY = centerY - 125 + (Math.random() - 0.5) * 300;
             let randomRot = (Math.random() - 0.5) * 40; // Rotación aleatoria
-            
+
             el.style.left = randomX + 'px';
             el.style.top = randomY + 'px';
             el.style.transform = `rotate(${randomRot}deg)`;
-            
+
             el.style.opacity = 1;
             el.style.zIndex = i + 10; // Para que se apilen
-            
+
             // Asegurarnos de que los videos se sigan reproduciendo infinitamente
             if (el.tagName === 'VIDEO') {
                 el.loop = true;
-                el.play().catch(e => {}); 
+                el.play().catch(e => { });
             }
         });
 
@@ -1339,8 +1339,8 @@ function startCinematic() {
         const finalMsg = document.createElement('div');
         finalMsg.id = 'cinematic-final-message';
         // ESTA ES LA LÍNEA QUE PUEDES CAMBIAR PARA EL MENSAJE FINAL
-        finalMsg.innerText = "Y así, nuestra historia apenas comienza...";
-        
+        finalMsg.innerText = "Un pequeño paso por nuestra historia... Te amo...";
+
         finalMsg.style.position = 'absolute';
         finalMsg.style.top = '10%'; // En la parte superior de la mesa
         finalMsg.style.left = '50%';
@@ -1354,9 +1354,9 @@ function startCinematic() {
         finalMsg.style.opacity = 0;
         finalMsg.style.transition = 'opacity 3s ease-in';
         finalMsg.style.width = '90%';
-        
+
         document.getElementById('cinematic-screen').appendChild(finalMsg);
-        
+
         // Aparece lentamente
         setTimeoutC(() => {
             finalMsg.style.opacity = 1;
@@ -1367,18 +1367,18 @@ function startCinematic() {
         exitBtn.classList.remove('hidden');
         exitBtn.onclick = () => {
             resetCinematicState();
-            
+
             const cinematicScreen = document.getElementById('cinematic-screen');
             cinematicScreen.classList.add('hidden');
-            
+
             document.getElementById('game-container').style.display = 'block';
-            
+
             slideshow.innerHTML = '';
             slideshow.style.backgroundColor = 'transparent';
-            
+
             document.getElementById('cinematic-message').classList.add('hidden');
             document.getElementById('cinematic-subtitles').innerText = '';
-            
+
             exitBtn.classList.add('hidden');
             if (finalMsg) finalMsg.remove();
         };
@@ -1388,7 +1388,7 @@ function startCinematic() {
     // 4. Subtítulos y Mensaje Central coordinado
     const messageBox = document.getElementById('cinematic-message');
     const subtitleBox = document.getElementById('cinematic-subtitles');
-    
+
     // Unos mensajes hermosos para Gabriela:
     const messages = [
         { time: 0, text: "" },
@@ -1413,10 +1413,10 @@ function startCinematic() {
     ];
 
     let startTime = Date.now();
-    
+
     setInterval(() => {
         let elapsed = (Date.now() - startTime) / 1000;
-        
+
         // Actualizar subtítulos
         let activeSubtitle = "";
         for (let i = 0; i < cravingSubtitles.length; i++) {
@@ -1431,7 +1431,7 @@ function startCinematic() {
             if (elapsed >= messages[i].time) activeMsg = messages[i].text;
             else break;
         }
-        
+
         if (activeMsg !== "") {
             messageBox.innerText = activeMsg;
             messageBox.classList.remove('hidden');
